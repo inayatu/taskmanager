@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html ng-app="mytaskList">
+<head>
+    <title>MyTasksList</title>
+    <link rel="stylesheet" href="src/bootstrap.min.css"><!-- load bootstrap -->
+    <script src="src/jquery.min.js"></script><!-- load jquery -->
+    <script src="src/angular.min.js"></script><!-- load angular -->
+    <script src="app.js"></script>
+</head>
+<body ng-controller="mainController">
+    <div class="container">
+        <!-- HEADER AND TODO COUNT -->
+        <div class="text-center">
+            <h1>My Task List <span class="label label-info">{{ tasks.length }}</span></h1>
+            <hr>
+        </div>
+
+        <!-- Add new task -->
+        <form class="well"> 
+            <div class="form-group">
+                <div class="input-group">
+                    <input ng-keyup="$event.keyCode == 13 ? addTask() : null" type="text" ng-model="task.title" class="form-control" placeholder="Add new task">
+                    <div class="input-group-btn">
+                        <input type="button" value="Add" class="btn btn-success" ng-disabled="!task.title" ng-click="addTask()">
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <!-- Task list -->
+        <div ng-repeat="task in tasks | orderBy: '-created'">  
+            <div class="col-md-1">
+                <input type="checkbox" ng-model="task.isDone" ng-change="updateTask(task)">
+            </div>    
+            <a href="#">
+                <div class="col-md-7">
+                    <span ng-show="!editTitle" ng-click="editTitle = true" style="white-space: pre-line; word-wrap: break-word;">     {{task.title}}
+                    </span> 
+                    <div class="input-group" ng-show="editTitle">
+                        <input ng-model="task.title" class="form-control"/>
+                        <div class="input-group-btn">
+                            <button class="btn btn-warning" ng-click="updateTask(task)">Update</button>
+                        </div>
+                    </div>
+
+                </div>
+            </a>
+            <div class="col-md-4">
+                <input type="button" value="Delete" class="btn btn-danger" ng-click="deleteTask(task._id)">
+            </div>
+            <br><br>
+        </div>
+
+        <div ng-show="!tasks.length" class="jumbotron text-center">
+            <p class="text-warning">No tasks added</p>
+        </div>
+
+    </div>
+
+    <!-- footer -->
+    <nav class="navbar navbar-default navbar-fixed-bottom">
+        <div class="container">
+            <br>
+            <p class="text-right text-muted"> Thank You <a href="https://www.youtube.com/watch?v=PFP0oXNNveg" target="_blank"> Traversy Media</a> & <a href="https://scotch.io/tutorials/creating-a-single-page-todo-app-with-node-and-angular" target="_blank">Scotch.io</a> Inayatullah</p>
+        </div>
+    </nav>
+</body>
+</html>
